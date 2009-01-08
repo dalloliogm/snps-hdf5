@@ -1,0 +1,11 @@
+How to install
+
+You need to have the HDF5 modules installed.
+On an Ubuntu machine, install the packages:
+- h5utils
+- hdf5-tools
+- libhdf5-serial-1.6.5-0
+- libhdf5-serial-dev
+
+Then, to install the pytables python library, do:
+sudo easy_install tables
