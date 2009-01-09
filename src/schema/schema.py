@@ -5,26 +5,30 @@ HDF5 schema for the HGDP snp data
 """
 
 from tables import IsDescription
-from tables import Int32Col
-from tables import *
+from tables import Int32Col, StringCol
 import tables
 import logging
 
 class Genotype(IsDescription):
     """
     A genotype identified by a snp ID and a individual ID
-    """
-    snp = StringCol(16)
-    individual_id = StringCol(16)
     
-    def __init__(self, snp, individual):
+    >>> geno1 = Genotype('hr1333', 'HGDP0001', '01')
+    
+    """
+    snp = StringCol(10)
+    individual_id = StringCol(16)
+    genotype = StringCol(2)
+    
+    def __init__(self, snp, individual, genotype):
         row = self.row
         row['snp'] = str(snp)
         row['individual'] = individual
+        row['genotype'] = genotype
+        row.append()
     
     
-    
-def create_test_file():
+def create_debug_file():
     """
     Create test file and tables
     """
@@ -39,7 +43,7 @@ def test_all():
     """
     test the current module
     """
-    create_test_file()
+    create_debug_file()
     import doctest
     doctest.testmod()
         
