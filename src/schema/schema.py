@@ -19,6 +19,7 @@ class Genotype(IsDescription):
     snp = StringCol(10)
     individual_id = StringCol(16)
     genotype = StringCol(2)
+    population = StringCol(30)
     
     def __init__(self, snp, individual, genotype):
         row = self.row
