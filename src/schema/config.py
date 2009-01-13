@@ -4,6 +4,7 @@
 """
 
 import tables
+from schema import Genotype
 
 h5df_file_path = '../../test.h5'
 
