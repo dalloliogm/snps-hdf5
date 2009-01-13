@@ -50,7 +50,7 @@ def create_debug_file():
     
     genotypes_table = h5dfile.createTable(group, 'genotypes', 
                                           Genotype, 'Genotypes table')
-    return genotypes_table
+    return h5dfile, group, genotypes_table
 
 
 def test_all():
