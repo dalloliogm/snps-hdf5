@@ -6,16 +6,22 @@
 import tables
 from schema import Genotype
 
-h5df_file_path = '../../test.h5'
+hdf5_file_path = '../../test.h5'
 
-def create_h5df_file(path = '../../data/test.h5'):
+def create_hdf5_file(path = '../../data/test.h5'):
     """
     Create test file and tables
     """
-    h5dfile = tables.openFile(path, mode = 'w', 
+    hdf5file = tables.openFile(path, mode = 'w', 
                               title = 'Testfile')
-    group = h5dfile.createGroup('/', 'tests', 'Test table')
+    group = hdf5file.createGroup('/', 'tests', 'Test table')
     
-    genotypes_table = h5dfile.createTable(group, 'genotypes', 
+    genotypes_table = hdf5file.createTable(group, 'genotypes', 
                                           Genotype, 'Genotypes table')
-    return h5dfile, group, genotypes_table
+    return hdf5file, group, genotypes_table
+
+def test_file():
+    create_hdf5_file(path = '../../data/test.h5')
+    
+def hdf5_file():
+    create_hdf5_file()
