@@ -15,7 +15,7 @@ class SNP(IsDescription):
     """
     A SNP table, containing many nested tables (genotypes, stats)
 
-    >>> import random; random.seed(0)
+#    >>> import random; random.seed(0)
 
 #    >>> snp = h5testfile.root.HGDP.snps
 #    >>> for i in range(10):
@@ -43,13 +43,16 @@ class SNP(IsDescription):
 
         class iHS_by_population(IsDescription):
             """
-            iHS by population for the current snp.
+            A nested table containing iHS by population for the current snp.
             """
             population = StringCol(20)
             iHS = Float64Col()
 
         class iHS_by_continent(IsDescription):
-            continent = StringCol(20)
+            """
+            A nested table containing iHS by continent for the current snp.
+            """
+             continent = StringCol(20)
             iHS = Float64Col()
 
 
