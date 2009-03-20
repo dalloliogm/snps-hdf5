@@ -54,13 +54,14 @@ def create_testfile():
     """
     Create test file and tables
     """
-    h5dfile = tables.openFile('../data/test.h5', mode = 'w', 
+    h5file = tables.openFile('../data/test.h5', mode = 'w', 
                               title = 'Testfile')
-    group = h5dfile.createGroup('/', 'tests', 'Test table')
+    h5file.createGroup('/', 'tests', 'Tests')
+    group = h5file.createGroup('/tests/', 'hgdp', 'hgdp tests')
     
-    genotypes_table = h5dfile.createTable(group, 'genotypes', 
-                                          GenotypeDescriptor, 'Genotypes table')
-    return h5dfile, group, genotypes_table
+    genotypes_table = h5file.createTable(group, 'snps', 
+                                          SNP, 'Genotypes table')
+    return h5file, group, genotypes_table
 
 
 def test_all():
