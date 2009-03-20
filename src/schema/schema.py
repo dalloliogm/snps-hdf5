@@ -21,19 +21,19 @@ class SNP(IsDescription):
 #    >>>     snp['id'] = i
 #    >>>     snp['position'] = random.choice(range(1000))
 #    >>>     snp['chromosome'] = random.choice(22)
-
     """
-
+    
     id = StringCol(20)
     position = UInt16Col()
-    chromosome = UInt8Col()
+    chromosome = StringCol(8)
 
     class genotypes(IsDescription):
         """
         A nested table containing the genotypes of the current snp.
         """
         individual = StringCol(16)
-        genotype = EnumCol(genotypes, '9', base='uint8')
+#        genotype = EnumCol(genotypes, '9', base='uint8')
+        genotype = UInt8Col()
 
     class stats(IsDescription):
         """
@@ -85,8 +85,10 @@ def filldata(h5file):
 
         for ind in individuals:
             snp['genotypes/individual'] = ind
-#            snp['genotypes/genotype'] = random.choice((genotypes.0, genotypes.1, genotypes.2, genotypes.9))
-            snp['genotypes/genotype'] = random.choice((0, 1, 2, 3))
+            snp['genotypes/genotype'] = random.choice('0 1 2 9'.split())
+            table.flush()
+
+        snp.append()
 
     table.flush()
 
