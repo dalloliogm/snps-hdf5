@@ -15,13 +15,13 @@ class SNP(IsDescription):
     """
     A SNP table, containing many nested tables (genotypes, stats)
 
-    import random; random.seed(0)
+    >>> import random; random.seed(0)
 
-    snp = h5testfile.root.HGDP.snps
-    for i in range(10):
-        snp['id'] = id
-        snp['position'] = random.choice(range(1000))
-        snp['chromosome'] = random.choice(22)
+#    >>> snp = h5testfile.root.HGDP.snps
+#    >>> for i in range(10):
+#    >>>     snp['id'] = id
+#    >>>     snp['position'] = random.choice(range(1000))
+#    >>>     snp['chromosome'] = random.choice(22)
 
     """
 
@@ -31,16 +31,20 @@ class SNP(IsDescription):
 
     class genotypes(IsDescription):
         """
-        A genotype identified by a snp ID and a individual ID
-        
-         
+        A nested table containing the genotypes of the current snp.
         """
         individual = StringCol(16)
         genotype = EnumCol(genotypes, '9', base='uint8')
 
     class stats(IsDescription):
+        """
+        A nested table containing some statistics related to the current snp.
+        """
 
         class iHS_by_population(IsDescription):
+            """
+            iHS by population for the current snp.
+            """
             population = StringCol(20)
             iHS = Float64Col()
 
