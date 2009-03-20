@@ -4,52 +4,62 @@ HDF5 schema for the HGDP snp data
 
 """
 
-from tables import IsDescription
-from tables import Int32Col, StringCol
+from tables import *
+from numpy import *
 import tables
 import logging
 
-class Genotype(IsDescription):
-    """
-    A genotype identified by a snp ID and a individual ID
-    
-    >>> geno1 = Genotype('hr1333', 'HGDP0001', '01')
-    
-    """
-    snp = StringCol(10)
-    individual_id = StringCol(16)
-    genotype = StringCol(2)
-    population = StringCol(30)
-    
-    def __init__(self, snp, individual, genotype):
-        row = self.row
-        row['snp'] = str(snp)
-        row['individual'] = individual
-        genotype = _check_valid_genotype
-        row['genotype'] = genotype
-        row.append()
+genotypes = tables.Enum(['0', '1', '2', '9'])
 
-def _check_valid_genotype(genotype):
+class SNP(IsDescription):
     """
-    check if genotype is a valid genotype 
-    (a string of 2 characters) 
+    A SNP table, containing many nested tables (genotypes, stats)
+
+    import random; random.seed(0)
+
+    snp = h5testfile.root.HGDP.snps
+    for i in range(10):
+        snp['id'] = id
+        snp['position'] = random.choice(range(1000))
+        snp['chromosome'] = random.choice(22)
+
     """
-    if not isinstance(genotype, str):
-        genotype = str(genotype)
-    if len(genotype) != 2:
-        raise TypeException('genotype should be two chars long')
-    return genotype
-    
-def create_debug_file():
+
+    id = StringCol(20)
+    position = UInt16Col()
+    chromosome = UInt8Col()
+
+    class genotypes(IsDescription):
+        """
+        A genotype identified by a snp ID and a individual ID
+        
+         
+        """
+        individual = StringCol(16)
+        genotype = EnumCol(genotypes, '9', base='uint8')
+
+    class stats(IsDescription):
+
+        class iHS_by_population(IsDescription):
+            population = StringCol(20)
+            iHS = Float64Col()
+
+        class iHS_by_continent(IsDescription):
+            continent = StringCol(20)
+            iHS = Float64Col()
+
+
+   
+def create_testfile():
     """
     Create test file and tables
     """
-    h5dfile = tables.openFile('../../data/test.h5', mode = 'w', 
+    h5dfile = tables.openFile('../data/test.h5', mode = 'w', 
                               title = 'Testfile')
     group = h5dfile.createGroup('/', 'tests', 'Test table')
     
     genotypes_table = h5dfile.createTable(group, 'genotypes', 
-                                          Genotype, 'Genotypes table')
+                                          GenotypeDescriptor, 'Genotypes table')
     return h5dfile, group, genotypes_table
 
 
@@ -58,7 +68,7 @@ def test_all():
     test the current module
     """
     logging.basicConfig(level=logging.DEBUG)
-    create_debug_file()
+    create_testfile()
     import doctest
     doctest.testmod()
         
