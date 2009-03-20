@@ -52,7 +52,7 @@ class SNP(IsDescription):
             """
             A nested table containing iHS by continent for the current snp.
             """
-             continent = StringCol(20)
+            continent = StringCol(20)
             iHS = Float64Col()
 
 
