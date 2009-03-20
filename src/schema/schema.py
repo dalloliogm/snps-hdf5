@@ -9,6 +9,7 @@ from numpy import *
 import tables
 import logging
 
+genotypes = Enum('0 1 2 9'.split())
 class SNP(IsDescription):
     """
     A SNP table, containing many nested tables (genotypes, stats)
@@ -32,7 +33,7 @@ class SNP(IsDescription):
         A nested table containing the genotypes of the current snp.
         """
         individual = StringCol(16)
-        genotype = EnumCol(('1', '2', '0', '9'), '9', base='uint8')
+        genotype = EnumCol(genotypes, '9', base='uint8')
 
     class stats(IsDescription):
         """
@@ -70,7 +71,8 @@ def filldata(h5file):
     """
     Fill test data in SNP
     """
-    snp = h5file.root.tests.hgdp.snps.row
+    table =  h5file.root.tests.hgdp.snps
+    snp = table.row
 
     random.seed(0)
 
@@ -82,8 +84,9 @@ def filldata(h5file):
         snp['chromosome'] = random.choice(xrange(22))
 
         for ind in individuals:
-            snp['genotypes']['individual'] = ind
-            snp['genotypes']['genotype'] = random.choice(('0', '1', '2', '9'))
+            snp['genotypes/individual'] = ind
+#            snp['genotypes/genotype'] = random.choice((genotypes.0, genotypes.1, genotypes.2, genotypes.9))
+            snp['genotypes/genotype'] = random.choice((0, 1, 2, 3))
 
     table.flush()
 
