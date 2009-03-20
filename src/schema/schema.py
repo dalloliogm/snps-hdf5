@@ -17,7 +17,7 @@ class SNP(IsDescription):
 
 #    >>> snp = h5testfile.root.HGDP.snps
 #    >>> for i in range(10):
-#    >>>     snp['id'] = id
+#    >>>     snp['id'] = i
 #    >>>     snp['position'] = random.choice(range(1000))
 #    >>>     snp['chromosome'] = random.choice(22)
 
@@ -64,6 +64,30 @@ class Individual(IsDescription):
         snp = StringCol(20)
         haplotype1 = EnumCol(('A', 'C', 'G', 'T', '-'), '-', base='uint8')
         haplotype1 = EnumCol(('A', 'C', 'G', 'T', '-'), '-', base='uint8')
+
+import random
+def filldata(h5file):
+    """
+    Fill test data in SNP
+    """
+    snp = h5file.root.tests.hgdp.snps.row
+
+    random.seed(0)
+
+    individuals = ('hgdp001', 'hgdp002', 'hgdp003')
+
+    for i in range(10):
+        snp['id'] = "rs000%d" % i
+        snp['position'] = random.choice(xrange(1000))
+        snp['chromosome'] = random.choice(xrange(22))
+
+        for ind in individuals:
+            snp['genotypes']['individual'] = ind
+            snp['genotypes']['genotype'] = random.choice(('0', '1', '2', '9'))
+
+    table.flush()
+
+
 
 def create_testfile():
     """
