@@ -9,8 +9,6 @@ from numpy import *
 import tables
 import logging
 
-genotypes = tables.Enum(['0', '1', '2', '9'])
-
 class SNP(IsDescription):
     """
     A SNP table, containing many nested tables (genotypes, stats)
@@ -34,7 +32,7 @@ class SNP(IsDescription):
         A nested table containing the genotypes of the current snp.
         """
         individual = StringCol(16)
-        genotype = EnumCol(genotypes, '9', base='uint8')
+        genotype = EnumCol(('1', '2', '0', '9'), '9', base='uint8')
 
     class stats(IsDescription):
         """
@@ -55,8 +53,18 @@ class SNP(IsDescription):
             continent = StringCol(20)
             iHS = Float64Col()
 
+class Individual(IsDescription):
+    """
+    """
 
-   
+    id = StringCol(20)
+    population = StringCol(50)      # Here it will be good to have relationships
+
+    class haplotypes(IsDescription):    # Redundancy!! 
+        snp = StringCol(20)
+        haplotype1 = EnumCol(('A', 'C', 'G', 'T', '-'), '-', base='uint8')
+        haplotype1 = EnumCol(('A', 'C', 'G', 'T', '-'), '-', base='uint8')
+
 def create_testfile():
     """
     Create test file and tables
