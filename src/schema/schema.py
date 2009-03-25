@@ -14,13 +14,6 @@ class SNP(IsDescription):
     """
     A SNP table, containing many nested tables (genotypes, stats)
 
-#    >>> import random; random.seed(0)
-
-#    >>> snp = h5testfile.root.HGDP.snps
-#    >>> for i in range(10):
-#    >>>     snp['id'] = i
-#    >>>     snp['position'] = random.choice(range(1000))
-#    >>>     snp['chromosome'] = random.choice(22)
     """
     
     id = StringCol(20)
@@ -86,7 +79,6 @@ def filldata(h5file):
         for ind in individuals:
             snp['genotypes/individual'] = ind
             snp['genotypes/genotype'] = random.choice('0 1 2 9'.split())
-            table.flush()
 
         snp.append()
 
